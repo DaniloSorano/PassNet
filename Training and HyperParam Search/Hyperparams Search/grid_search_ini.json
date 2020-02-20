@@ -1,0 +1,18 @@
+{
+  "input_dim" : 4096,
+  "hidden_dim" : 128,
+  "layer_dim" : 1,
+  "output_dim" : 1,
+  "readout_dim" : 2,
+  "drop_out": [0.0, 0.5],
+  "cnn_model" : "vgg16",
+  "optimizer" : "ADAM",
+  "learning_rate" : [0.01, 0.001, 0.0001],
+  "matches_code_train" : ["roma_juve_1"],
+  "matches_code_val" : ["roma_juve_2"],
+  "batch_size" : 1,
+  "seq_dim" : 10,
+  "epochs" : 10,
+  "device" : 0,
+  "save_epoch_model" : true
+}
