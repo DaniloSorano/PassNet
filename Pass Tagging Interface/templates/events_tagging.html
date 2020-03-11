@@ -1,0 +1,290 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='material-design-icons-master/css/material-icons.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='css/table_scroll.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+      jQuery(document).ready(function($) {
+
+          var url = window.location.href
+          if (url.includes("Pass")){
+            $("#pass-events").attr('checked', true);
+          }else{
+            $("#shot-events").attr('checked', true);
+          }
+          
+         var time = $("tr:nth-child(1)").find('td:nth-child(4)').text()
+         var vid = document.getElementById("myVideo");
+         vid.currentTime = time - 0.5
+
+         $(window).keydown(function(event) {
+            if(event.which == 87) {
+                $('#start-pause').trigger("click")
+              event.preventDefault();
+            }
+            if(event.which == 69) {
+                $('#next-frame').trigger("click")
+              event.preventDefault();
+            }
+            if(event.which == 81) {
+                $('#prev-frame').trigger("click")
+              event.preventDefault();
+            }
+            if(event.which == 79) {
+                $('#pass-start').trigger("click")
+              event.preventDefault();
+            }
+            if(event.which == 80) {
+                $('#pass-end').trigger("click")
+              event.preventDefault();
+            }
+          });
+
+         $(".clickable-row").click(function() {
+           var time = $(this).find('td:nth-child(4)').text();
+           $('tr').removeClass("bg-info text-white font-weight-bold")
+           $(this).addClass("bg-info text-white font-weight-bold")
+           var vid = document.getElementById("myVideo");
+           vid.currentTime = time - 0.5
+         });
+
+         $("#next-frame").click(function() {
+           var vid = document.getElementById("myVideo");
+           vid.pause();
+           vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.04);
+         });
+
+         $("#prev-frame").click(function() {
+           var vid = document.getElementById("myVideo");
+           vid.pause();
+           vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.04);
+         });
+
+         $("#start-pause").click(function() {
+           var vid = document.getElementById("myVideo");
+           if (vid.paused) {
+             vid.play();
+             $(this).html('<i class="mdi mdi-pause"></i>')
+           } else {
+             vid.pause();
+             $(this).html('<i class="mdi mdi-play-arrow mdi-lg"></i>')
+           }
+         });
+
+         $("#pass-start").click(function() {
+           var vid = document.getElementById("myVideo");
+           var time_start = (Math.round( vid.currentTime * 100) / 100)
+           $(".bg-info").find('td:nth-child(5)').addClass("text-danger")
+           $(".bg-info").find('td:nth-child(5)').html("<strong>" + time_start + "</strong>")
+         });
+
+         $("#pass-end").click(function() {
+           var vid = document.getElementById("myVideo");
+           vid.pause();
+           var time_start = (Math.round( vid.currentTime * 100) / 100)
+           $(".bg-info").find('td:nth-child(6)').addClass("text-danger")
+           $(".bg-info").find('td:nth-child(6)').html("<strong>" + time_start + "</strong>")
+           var next_row = $(".bg-info").next('tr')
+           var time_next_row = next_row.find('td:nth-child(4)').text()
+           if(time_next_row != '') {
+             $('tr').removeClass("bg-info text-white font-weight-bold")
+             next_row.addClass("bg-info text-white font-weight-bold")
+             vid.currentTime = time_next_row - 0.5
+           }
+         });
+
+         $("#prev-pass").click(function() {
+           var next_row = $(".bg-info").prev('tr')
+           var time_next_row = next_row.find('td:nth-child(4)').text()
+           if(time_next_row != '') {
+             $('tr').removeClass("bg-info text-white font-weight-bold")
+             next_row.addClass("bg-info text-white font-weight-bold")
+             vid.currentTime = time_next_row - 0.5
+           }
+         });
+
+         $("#update-csv").click(function() {
+
+            var table_matrix = new Array()
+            $('#myTable tr').each(function(){
+                var row_list = ""
+                var firstLine = true
+                $(this).find('td').each(function(){
+                  if (firstLine) {
+                    row_list += $(this).text()
+                    firstLine = false
+                  }
+                  else {
+                    row_list += ";" + $(this).text()
+                  }
+                })
+                table_matrix.push(row_list)
+            })
+
+            $.ajax({
+             type: "POST",
+             data: JSON.stringify({table:table_matrix}),
+             url: "/{{match}}/update",
+             contentType: "application/json; charset=utf-8",
+             success: function(dat) { console.log(dat);}
+            });
+
+            $.ajax({
+              url: '/{{match}}',
+              success: function() {
+                  window.location.reload();
+              }
+            });
+
+         });
+
+
+      });
+    </script>
+  </head>
+   <body>
+
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-md-2">
+      <span class="navbar-brand mb-2 mt-2 display2 ">Events Tagging Dashboard</span>
+
+      <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Matches
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% for v in (dropdown) %}
+                 <a class="dropdown-item" href= "/{{ v[1] }}" >{{ v[0] }}</a>
+              {% endfor %}
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </nav>
+
+      <div class="container-fluid p-4 bg-light text-dark">
+
+        <div class="row">
+          <div class="col-7">
+            <h2 class="text-center">{{ match_name }}</h2>
+          </div>
+          <div class="col-5">
+            <div class="row border border-secondary rounded-top">
+              <div class="col-md-3 p-3">
+                <button type="button" class="btn btn-warning btn-md" id="update-csv"><i class="mdi mdi-file-upload mdi-lg"></i> Update CSV</button>
+              </div>
+              <div class="col-md-8 text-center p-3">
+                <h4 class="text-dark"><strong>Last Update: {{date_last_update}}</strong></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <video class="col-lg-7" src="{{ video_link }}" controls id="myVideo"></video>
+          <div class="col-lg-5 border border-secondary rounded-bottom p-0" id="table_div">
+            <table class="table table-scroll table-hover" id="myTable">
+              <thead class="thead-dark fixed_header">
+                <tr>
+                  {% for header_val in (data[0]) %}
+                    <th scope="col">{{header_val}}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% set rows = [] %}
+                {% for row in (data[1:]) %}
+                  {% if rows|length < 1 %}
+                    <tr class='clickable-row bg-info text-white font-weight-bold'>
+                      {% for val in (row) %}
+                        {% if (val != '0' and (loop.index0 == 4 or loop.index0 == 5)) %}
+                          <td class="font-weight-bold">{{val}}</td>
+                        {% else %}
+                          <td>{{val}}</td>
+                        {% endif %}
+                      {% endfor %}
+                    </tr>
+                    {% if rows.append(1) %}{% endif %}
+                  {% else %}
+                    <tr class='clickable-row'>
+                      {% for val in (row) %}
+                        {% if (val != '0' and (loop.index0 == 4 or loop.index0 == 5)) %}
+                          <td class="font-weight-bold">{{val}}</td>
+                        {% else %}
+                          <td>{{val}}</td>
+                        {% endif %}
+                      {% endfor %}
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+            </tbody>
+          </table>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-lg-7">
+
+            <div class="row border border-secondary rounded-top mt-3">
+              <div class="col p-3 text-center">
+                <button type="button" class="btn btn-dark btn-md btn-block" id="prev-frame"><i class="mdi mdi-skip-previous mdi-lg"></i></button>
+              </div>
+              <div class="col p-3 text-center">
+                <button type="button" class="btn btn-danger btn-md btn-block" id="start-pause"><i class="mdi mdi-play-arrow mdi-lg"></i></button>
+              </div>
+              <div class="col p-3 text-center">
+                <button type="button" class="btn btn-dark btn-md btn-block" id="next-frame"><i class="mdi mdi-skip-next mdi-lg"></i></button>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-5">
+            <div class="row">
+              <div class="col-5 p-3 text-center">
+                <div class="radio">
+                  <h4 class="text-dark"><strong>Events Type:</strong></h4>
+                </div>
+              </div>
+              <div class="col-3 p-3 text-center">
+                <div class="radio">
+                  <label><input type="radio" onclick="window.location='/{{match_code + '_Pass'}}';" name="optradio" id="pass-events" >Pass</label>
+                </div>
+              </div>
+              <div class="col-3 p-3 text-center">
+                <div class="radio">
+                  <label><input type="radio" onclick="window.location='/{{match_code + '_Shot'}}';" name="optradio" id="shot-events">Shot</label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-7">
+
+            <div class="row pt-2 border border-secondary rounded-bottom">
+              <div class="col p-3 text-center">
+                <button type="button" class="btn btn-primary btn-md btn-block" id="pass-start"> <i class="mdi mdi-watch-later mdi-lg"></i> Pass Start</button>
+              </div>
+              <div class="col p-3 text-center">
+                <button type="button" class="btn btn-success btn-md btn-block " id="pass-end"><i class="mdi mdi-watch-later mdi-lg"></i> Pass End</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5">
+
+          </div>
+        </div>
+      </div>
+   </body>
+</html>
