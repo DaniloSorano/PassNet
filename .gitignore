@@ -1,0 +1,8 @@
+/environments/
+.DS_Store
+/.bash_history
+/.bash_logout
+/.bashrc
+/.profile
+/Sender SFTP/
+/Data/
