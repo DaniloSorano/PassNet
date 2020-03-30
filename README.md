@@ -67,7 +67,7 @@ To choose what kind of model to train you have to define some parameters, specif
 {
   "yolo" : true,
   "yolo_dimension" : 24,
-  "model_type" : 'CNN+LSTM',
+  "model_type" : "CNN+LSTM",
 }
 ```
 ##### ResNet18 + Bi-LSTM
@@ -75,7 +75,7 @@ To choose what kind of model to train you have to define some parameters, specif
 {
   "yolo" : false,
   "yolo_dimension" : 0,
-  "model_type" : 'CNN+LSTM',
+  "model_type" : "CNN+LSTM",
 }
 ```
 ##### Bi-LSTM
@@ -83,6 +83,6 @@ To choose what kind of model to train you have to define some parameters, specif
 {
   "yolo" : false,
   "yolo_dimension" : 0,
-  "model_type" : 'LSTM',
+  "model_type" : "LSTM",
 }
 ```
