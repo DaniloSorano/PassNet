@@ -12,4 +12,4 @@ In the data extraction phase, the data is extracted from the match videos which 
 * Features Extraction.
 * Objects Position Extraction.
 #### Tensors Extraction
-This type of extraction allows to extract the tensors in the size 3x352x240 from each single frame.
+This type of extraction allows to extract the tensors in the size 3x352x240 from each single frame. To extract the tensors from the frames you have to launch the "main.py" script that is in the "Data Extraction" folder and add four parameters: the path of the video, the name of the video, the number of fps contained in the video and the type of extraction (frame or tensor). The script saves the tensors in .pkl format in the path "Data/Input/frames_image/<name_of_the_video>". An example that shows how to run the script "main.py":    `main.py "../Data/Video/" chievo_juve_1.mp4 25 tensor`
