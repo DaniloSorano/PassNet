@@ -12,4 +12,25 @@ In the data extraction phase, the data is extracted from the match videos which 
 * Features Extraction.
 * Objects Position Extraction.
 #### Tensors Extraction
-This type of extraction allows to extract the tensors in the size 3x352x240 from each single frame. To extract the tensors from the frames you have to launch the "main.py" script that is in the "Data Extraction" folder and add four parameters: the path of the video, the name of the video, the number of fps contained in the video and the type of extraction (frame or tensor). The script saves the tensors in .pkl format in the path "Data/Input/frames_image/<name_of_the_video>". An example that shows how to run the script "main.py":    `main.py "../Data/Video/" chievo_juve_1.mp4 25 tensor`
+This type of extraction allows to extract the tensors in the size 3x352x240 from each single frame. To extract the tensors from the frames you have to launch the `main.py` script that is in the `Data Extraction` folder and add four parameters: the path of the video, the name of the video, the number of fps contained in the video and the type of extraction (frame or tensor). The script saves the tensors in .pkl format in the path `Data/Input/frames_tensor/<name_of_the_video>`. An example that shows how to run the script:  
+`main.py "../Data/Video/" chievo_juve_1.mp4 25 tensor`
+#### Features Extraction
+You can perform the features extraction by launching the `features.py` script defining three parameters: video path, video name and pre-trained template used for the extraction.  The pre-trained models that can be used are: VGG16, VGG19, ResNet18, ResNet34 and ResNet50. The extracted features are saved inside theExtract features are saved within the `Data/Input/<name_of_the_model>` path. An example that shows how to run the script:  
+`feature_extraction.py "../Data/Video/" chievo_juve_1.mp4 resnet18`.
+#### Objects Position Extraction
+The object position extraction (ball and players) uses a PyTorch implementation of the real-time object detection model, Yolov3, on GitHub. In order to extract the positions we had to modify the `detect.py` file inside the repository. The extraction of the positions requires first of all the download of the original repository from which we have to modify the `detect.py` file, present in our repository in the YOLO folder. After that you can start the `detect.py` script by defining the parameters from row 27 to 38 of `detect.py`:  
+```python
+parser.add_argument("--image_folder", type=str, default="data/samples", help="path to dataset")  
+parser.add_argument("--model_def", type=str, default="config/yolov3.cfg", help="path to model definition file")  
+parser.add_argument("--weights_path", type=str, default="weights/yolov3.weights", help="path to weights file")  
+parser.add_argument("--class_path", type=str, default="data/coco.names", help="path to class label file")  
+parser.add_argument("--conf_thres", type=float, default=0.8, help="object confidence threshold")  
+parser.add_argument("--nms_thres", type=float, default=0.4, help="iou thresshold for non-maximum suppression")  
+parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")  
+parser.add_argument("--n_cpu", type=int, default=0, help="number of cpu threads to use during batch generation")  
+parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")  
+parser.add_argument("--checkpoint_model", type=str, help="path to checkpoint model")  
+parser.add_argument("--save_image", type=str, help="path to checkpoint model")  
+parser.add_argument("--bbox_coordinates", type=str, help="create a txt file where save bbox coordinates")
+```
+
