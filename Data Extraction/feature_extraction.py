@@ -26,24 +26,25 @@ to_tensor = transforms.ToTensor()
 def copy_data(m, i, o):
     my_embedding.copy_(o.data)
 
-filename = sys.argv[1]
+filename = sys.argv[2]
+path_video = sys.argv[1]
 print ("Feature extraction from: ", filename)
 vidcap = cv2.VideoCapture("../Video/" + filename)
 
 #Different pretrained models can be used to extract the features
-if sys.argv[2] == "vgg16" :
+if sys.argv[3] == "vgg16" :
     cnn = models.vgg16(pretrained=True)
     cnn.classifier = nn.Sequential(*list(cnn.classifier.children())[:-3])
     input_dim = 4096
-elif sys.argv[2] == "resnet34" :
+elif sys.argv[3] == "resnet34" :
     cnn = models.resnet34(pretrained=True)
     layer = cnn.avgpool
     my_embedding = torch.zeros(1, 512)
-elif sys.argv[2] == "resnet18" :
+elif sys.argv[3] == "resnet18" :
     cnn = models.resnet18(pretrained=True)
     cnn = nn.Sequential(*(list(cnn.children())[:-1]))
     input_dim = 512
-elif sys.argv[2] == "resnet50" :
+elif sys.argv[3] == "resnet50" :
     cnn = models.resnet50(pretrained=True)
     layer = cnn.avgpool
     my_embedding = torch.zeros(2, 512)
