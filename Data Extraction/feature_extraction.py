@@ -53,8 +53,8 @@ else:
     layer = cnn.classifier[3]
     my_embedding = torch.zeros(2, 4096)
 
-if not os.path.exists( "../Data/Input/" + str(sys.argv[2])):
-    os.makedirs( "../Data/Input/" + str(sys.argv[2]),mode=0o0775)
+if not os.path.exists( "../Data/Input/" + str(sys.argv[3])):
+    os.makedirs( "../Data/Input/" + str(sys.argv[3]),mode=0o0775)
 
 cnn.eval()
 total_frame = vidcap.get(cv2.CAP_PROP_FRAME_COUNT)
