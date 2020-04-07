@@ -1,0 +1,20 @@
+{
+  "input_dim" : 512,
+  "hidden_dim" : 256,
+  "layer_dim" : 1,
+  "output_dim" : 1,
+  "readout_dim" : 2,
+  "yolo" : true,
+  "yolo_dimension" : 24,
+  "learning_rate" : 0.0001,
+  "momentum" : 0.9,
+  "cnn_bi_lstm_model" : "resnet18",
+  "matches_predictions" : "sassuolo_inter_2",
+  "val_number" : 0,
+  "threshold" : 0.5,
+  "device" : 1,
+  "batch_size" : 1,
+  "seq_dim" : 25,
+  "model_to_load": 4,
+  "optimizer" : "ADAM"
+}
