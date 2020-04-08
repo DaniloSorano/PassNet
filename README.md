@@ -103,3 +103,9 @@ We save the metrics for the test and train set inside the folder ```Model Metric
   "dataset_type": ["Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0"]
 }
 ```
+#### Predicting
+The models saved in the training phase in ```.pth``` format can be used to annotate new videos and obtain the model's performance in terms of *Accuracy*, *Precision 'Pass'*, *Precision 'No Pass'*, *Recall 'Pass'*, *Recall 'No Pass'* and *F1 Score 'Pass'*. The folder ```Predicting``` allows to do this, in particular the script ```video_prediction.py``` returns the predictions without threshold, the predictions with the threshold equal to 0.5 and the metrics of the video passed as input.
+Before running the script you need to perform two basic operations, the first one requires you to insert the model to load in ```.pth``` format in the ```Model State``` folder. The second operation requires you to set the file ```video_lab_ini.json``` inside the ```Model Ini``` folder with the model parameters and the name of the video you want to annotate. The file parameters are the same as those in ```train_ini.json``` except for some, such as: :
+* ```model_to_load```: this parameter is numeric and refers to the model number to load. In practice, the models saved during training are marked with a number that identifies the epoch.
+* ```threshold```: the treshold to apply to predictions.
+* ```matches_predicitions```: the name of the video to annotate. The folder with the tensors of the frames must be saved inside the path ```Data/Input/frame_tensor/<name_of_the_video>```.
