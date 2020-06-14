@@ -1,1 +1,4 @@
-# here we insert all the commands to perform the prediction for an input video
+# This command allows to start the script that make predictions
+# Before start t
+cd Predicting
+python video_prediction.py
