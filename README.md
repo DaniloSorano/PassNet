@@ -112,4 +112,4 @@ Before running the script you need to perform two basic operations, the first on
 
 ## Pass Tagging Interface
 The pass tagging interface allows to define the time window of the pass event. The image below shows how the mainly UI of the interface.
-![PassTaggingInterface](/Scheme/PassTagginInterface.pdf)
+![PassTaggingInterface](/Scheme/manual_annotation_application-1.png)
