@@ -111,5 +111,14 @@ Before running the script you need to perform two basic operations, the first on
 * ```matches_predicitions```: the name of the video to annotate. The folder with the tensors of the frames must be saved inside the path ```Data/Input/frame_tensor/<name_of_the_video>```.
 
 ## Pass Tagging Interface
-The pass tagging interface allows to define the time window of the pass event. The image below shows how the mainly UI of the interface.
-![PassTaggingInterface](/Scheme/manual_annotation_application-1.png)
+The pass tagging interface allows to define the time window of the pass event. The image below shows how the mainly UI of the interface.  
+
+![PassTaggingInterface](/Scheme/manual_annotation_application-1.png)  
+
+a) The dropdown element allows to select wich match you want to tag,  
+b) The table shows all the pass event that occurs during the match. The rows are clickable and set the video at the start time of the pass event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'.  
+c) The player shows the video of the match. The buttons under the video allows to play/pause the video, go to previous frame, go to next frame, define the start time and the end time of the pass event.
+
+### Run the interface
+
+
