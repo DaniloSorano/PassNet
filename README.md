@@ -2,7 +2,7 @@
 The code in this repository implements the **PassNet** model, the **ResNet18 + Bi-LSTM** model and the **Bi-LSTM** model that uses data extracted from a pre-trained model as input.
 Also, there is the **Pass Tagging Interface** code that allows a user to define the temporal window of the Pass event annotated by Wyscout.
 
-## PassNet, ResNet18 + Bi-LSTM and Bi-LSTM
+## PassNet and ResBi
 The three models PassNet, ResNet18 + Bi-LSTM and Bi-LSTM were implemented through the Python programming language using [PyTorch](https://pytorch.org/), an open-source machine learning framework. These models use videos of football matches as input and provide a binary sequence of values, the *Pass Vector*, as output. The figure at the bottom shows the general structure that allows the models, starting from the raw data (video), to make predictions (Pass Vector).
 We can see how the structure is divided into three microstructures:**Data Extraction**, **Annotation Process** and **Training/Prediction**.
 ![Architecture](/Scheme/Training_Process.png)
@@ -109,3 +109,7 @@ Before running the script you need to perform two basic operations, the first on
 * ```model_to_load```: this parameter is numeric and refers to the model number to load. In practice, the models saved during training are marked with a number that identifies the epoch.
 * ```threshold```: the treshold to apply to predictions.
 * ```matches_predicitions```: the name of the video to annotate. The folder with the tensors of the frames must be saved inside the path ```Data/Input/frame_tensor/<name_of_the_video>```.
+
+## Pass Tagging Interface
+The pass tagging interface allows to define the time window of the pass event. The image below shows how the mainly UI of the interface.
+![PassTaggingInterface](/Scheme/PassTagginInterface.pdf)
