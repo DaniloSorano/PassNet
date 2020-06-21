@@ -120,5 +120,6 @@ b) The table shows all the pass event that occurs during the match. The rows are
 c) The player shows the video of the match. The buttons under the video allows to play/pause the video, go to previous frame, go to next frame, define the start time and the end time of the pass event.
 
 ### Run the interface
-
+To run the interface you need to run the requirements.txt file that contains all the dependencies required, especially the flask library. As a first step to start the interface you must first open a bash in order to launch the following script:  
+```python events_tagging_dashboard.py```
 
