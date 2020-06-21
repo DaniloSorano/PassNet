@@ -29,10 +29,7 @@ class Events_DataSet():
         with open("Data/chievo-juve-2018-08-18.json", encoding='utf-8') as file_events:
             chievo_juve = json.load(file_events)
             self.data_events += chievo_juve['events']
-
-'''
-This function extracts the specific events of a specific match
-'''
+    #This function extracts the specific events of a specific match
     def createDataMatch(self, match="sassuolo_inter_1", eventName = "Pass"):
         matchId = 0
         period = 0
