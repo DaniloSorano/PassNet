@@ -67,7 +67,7 @@ To run the interface you need to run the requirements.txt file that contains all
 ```python events_tagging_dashboard.py```  
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.jpg)  
-Now, you can access the interface from a browser, by accessing the following url: ```http://localhost:8000```
+Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```
 
 
 
