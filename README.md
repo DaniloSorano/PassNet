@@ -60,7 +60,7 @@ c) The player shows the video of the match. The buttons under the video allows t
 
 #### Run the interface
 
-Before launching the interface it is necessary to insert the videos in mp4 format inside the static folder and create a folder named 'Data' containing the corresponding event data (Wyscout json format). Unfortunately, an event indicates the time when the pass starts, but not when it ends. Moreover, by comparing the video and the events, we note that the time of an event is often misaligned with the video.
+Before launching the interface it is necessary to insert the videos in mp4 format inside the folder ```static``` and create a folder named 'Data' containing the corresponding event data (Wyscout json format). Unfortunately, an event indicates the time when the pass starts, but not when it ends. Moreover, by comparing the video and the events, we note that the time of an event is often misaligned with the video.
 We overcome these drawbacks by annotating manually the passes.
 
 To run the interface you need to run the requirements.txt file that contains all the dependencies required, especially the flask library. As a first step to start the interface you must first open a bash in order to launch the following script:  
