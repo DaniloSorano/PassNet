@@ -107,7 +107,7 @@ To choose what kind of model to train you have to define some parameters, specif
   "model_type" : "CNN+LSTM",
 }
 ```
-##### ResNet18 + Bi-LSTM
+##### ResBi
 ```json
 {
   "yolo" : false,
@@ -115,14 +115,7 @@ To choose what kind of model to train you have to define some parameters, specif
   "model_type" : "CNN+LSTM",
 }
 ```
-##### Bi-LSTM
-```json
-{
-  "yolo" : false,
-  "yolo_dimension" : 0,
-  "model_type" : "LSTM",
-}
-```
+
 After defining the parameters you can start training the model by launching the ```TrainModel.py``` script. This script in addition to training the model calculates the metrics at each time on the train set and the test set at each time defined in the ```eval_epochs``` parameter. Also, if the ```save_epoch_model``` parameter is set to True then the models at each step and the test set predictions associated with that step are saved in the ```Model Steps``` folder.  
 We save the metrics for the test and train set inside the folder ```Model Metrics``` in a file called ```model_metrics.json```. The metrics saved into the file are: Confusion Matrix value, Loss, Average Precision, Accuracy, Precision "Pass", Precision "No Pass", Recall "Pass", Recall "No Pass" and F1 Score.
 ##### Example of ```model_metrics.json``` structure
