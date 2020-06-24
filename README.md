@@ -1,10 +1,13 @@
 # Soccer-Pass-Detection
-The code in this repository implements the **PassNet** model, the **ResNet18 + Bi-LSTM** model and the **Bi-LSTM** model that uses data extracted from a pre-trained model as input.
-Also, there is the **Pass Tagging Interface** code that allows a user to define the temporal window of the Pass event annotated by Wyscout.
+The code in this repository implements **PassNet** and **ResBi**, two models that perform pass annotation from soccer video broadcasts, and the **Pass Tagging Interface**, which allows a user to define the temporal window of the Pass event annotated by Wyscout. The code referes to the following paper:
+
+    Sorano et al., Automatic Pass Annotation from Soccer VideoStreams Based on Object Detection and LSTM, In Proceedings of ECML-PKDD, 2020.
+
+## Data sets
+The data sets to reproduce the work can be found at: 
 
 ## PassNet and ResBi
-The three models PassNet, ResNet18 + Bi-LSTM and Bi-LSTM were implemented through the Python programming language using [PyTorch](https://pytorch.org/), an open-source machine learning framework. These models use videos of football matches as input and provide a binary sequence of values, the *Pass Vector*, as output. The figure at the bottom shows the general structure that allows the models, starting from the raw data (video), to make predictions (Pass Vector).
-We can see how the structure is divided into three microstructures:**Data Extraction**, **Annotation Process** and **Training/Prediction**.
+PassNet and ResBi are implemented in Python using [PyTorch](https://pytorch.org/). These models use soccer video broadcasts as input and provide a binary sequence of values, the *Pass Vector*, as output. The figure below shows the general structure that allows the models to make predictions starting from the video frames, and consists of three modules: **Data Extraction**, **Annotation Process** and **Training/Prediction**.
 ![Architecture](/Scheme/Training_Process.png)
 ### Data Extraction
 In the data extraction phase, the data is extracted from the match videos which will then be used as input for the models. Each model takes different types of data as input, for this reason, we split the typologies of data extraction: 
