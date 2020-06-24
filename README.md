@@ -4,41 +4,75 @@ The code in this repository implements **PassNet** and **ResBi**, two models tha
     Sorano et al., Automatic Pass Annotation from Soccer VideoStreams Based on Object Detection and LSTM, In Proceedings of ECML-PKDD, 2020.
 
 ## Data sets
-The data sets to reproduce the work can be found at: 
+The data sets to reproduce the work can be found at: https://doi.org/10.6084/m9.figshare.c.5036993
 
 ## PassNet and ResBi
 PassNet and ResBi are implemented in Python using [PyTorch](https://pytorch.org/). These models use soccer video broadcasts as input and provide a binary sequence of values, the *Pass Vector*, as output. The figure below shows the general structure that allows the models to make predictions starting from the video frames, and consists of three modules: **Data Extraction**, **Annotation Process** and **Training/Prediction**.
 ![Architecture](/Scheme/Training_Process.png)
-### Data Extraction
+
+## Data Extraction and preprocessing
 In the data extraction phase, the data is extracted from the match videos which will then be used as input for the models. Each model takes different types of data as input, for this reason, we split the typologies of data extraction: 
 * Tensors Extraction.
 * Features Extraction.
 * Objects Position Extraction.
-#### Tensors Extraction
-This type of extraction allows to extract the tensors in the size 3x352x240 from each single frame. To extract the tensors from the frames you have to launch the `main.py` script that is in the `Data Extraction` folder and add four parameters: the path of the video, the name of the video, the number of fps contained in the video and the type of extraction (frame or tensor). The script saves the tensors in .pkl format in the path `Data/Input/frames_tensor/<name_of_the_video>`. An example that shows how to run the script:  
+### Tensors Extraction
+This type of extraction allows to extract the tensors in the size 3x352x240 from each single frame. To extract the tensors from the frames you have to launch the `main.py` script that is in the `Data Extraction` folder and add four parameters: the path of the video, the name of the video, the number of fps contained in the video and the type of extraction (frame or tensor).  An example that shows how to run the script:  
 `main.py "../Data/Video/" chievo_juve_1.mp4 25 tensor`
-#### Features Extraction
-You can perform the features extraction by launching the `features.py` script defining three parameters: video path, video name and pre-trained template used for the extraction.  The pre-trained models that can be used are: VGG16, VGG19, ResNet18, ResNet34 and ResNet50. The extracted features are saved inside theExtract features are saved within the `Data/Input/<name_of_the_model>` path. An example that shows how to run the script:  
+
+In the example above, the script saves the tensors in .pkl format in the path `Data/Input/frames_tensor/chievo_juve_1`.
+### Features Extraction
+You can perform the features extraction by launching the `features.py` script defining three parameters: video path, video name and pre-trained template used for the extraction.  The pre-trained models that can be used are: VGG16, VGG19, ResNet18, ResNet34 and ResNet50.  An example that shows how to run the script:  
 `feature_extraction.py "../Data/Video/" chievo_juve_1.mp4 resnet18`.
-#### Objects Position Extraction
-The object position extraction (ball and players) uses a PyTorch implementation of the real-time object detection model, Yolov3, on [GitHub](https://github.com/eriklindernoren/PyTorch-YOLOv3). In order to extract the positions we had to modify the `detect.py` file inside the repository. The extraction of the positions requires first of all the download of the original repository from which we have to modify the `detect.py` file, present in our repository in the YOLO folder. After that you can start the `detect.py` script by defining the parameters from row 27 to 38 of `detect.py`:  
-```python
-parser.add_argument("--image_folder", type=str, default="data/samples", help="path to dataset")  
-parser.add_argument("--model_def", type=str, default="config/yolov3.cfg", help="path to model definition file")  
-parser.add_argument("--weights_path", type=str, default="weights/yolov3.weights", help="path to weights file")  
-parser.add_argument("--class_path", type=str, default="data/coco.names", help="path to class label file")  
-parser.add_argument("--conf_thres", type=float, default=0.8, help="object confidence threshold")  
-parser.add_argument("--nms_thres", type=float, default=0.4, help="iou thresshold for non-maximum suppression")  
-parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")  
-parser.add_argument("--n_cpu", type=int, default=0, help="number of cpu threads to use during batch generation")  
-parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")  
-parser.add_argument("--checkpoint_model", type=str, help="path to checkpoint model")  
-parser.add_argument("--save_image", type=str, help="path to checkpoint model")  
-parser.add_argument("--bbox_coordinates", type=str, help="create a txt file where save bbox coordinates")
+
+In the example, the extracted features are saved inside theExtract features are saved within the `Data/Input/chievo_juve_1` path.
+
+### Objects Position Extraction
+The object position extraction (ball and players) uses a PyTorch implementation of the real-time object detection model, Yolov3, on [GitHub](https://github.com/eriklindernoren/PyTorch-YOLOv3). In the YOLO folder, we provide a modified version of the original `detect.py` script from pytorch-yolov3 repository. To run the `detect.py` you can also specify the following arguments:
 ```
-### Training/Predictions
-We use the data extracted during the training phase as input for our three models that will return the predictions as output. The models can be trained and then used to make predictions.
-#### Training
+--image_folder", type=str, default="data/samples", help="path to dataset"  
+--model_def", type=str, default="config/yolov3.cfg", help="path to model definition file"  
+--weights_path", type=str, default="weights/yolov3.weights", help="path to weights file"  
+--class_path", type=str, default="data/coco.names", help="path to class label file" 
+--conf_thres", type=float, default=0.8, help="object confidence threshold"  
+--nms_thres", type=float, default=0.4, help="iou thresshold for non-maximum suppression"  
+--batch_size", type=int, default=1, help="size of the batches"  
+--n_cpu", type=int, default=0, help="number of cpu threads to use during batch generation"  
+--img_size", type=int, default=416, help="size of each image dimension"  
+--checkpoint_model", type=str, help="path to checkpoint model"  
+--save_image", type=str, help="path to checkpoint model"  
+--bbox_coordinates", type=str, help="create a txt file where save bbox coordinates"
+```
+
+### Manual annotation for passes
+
+Manual annotation of passes from an input video is necessary if you want to perform a new training of PassNet. To accomplish this task, we created a web app.
+
+#### Pass tagging webapp
+
+The pass tagging interface allows to define the time window of the pass event. The image below shows how the mainly UI of the interface.
+
+![PassTaggingInterface](/Scheme/manual_annotation_application-1.png)  
+
+a) The dropdown element allows to select wich match you want to tag,  
+b) The table shows all the pass event that occurs during the match. The rows are clickable and set the video at the start time of the pass event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'.  
+c) The player shows the video of the match. The buttons under the video allows to play/pause the video, go to previous frame, go to next frame, define the start time and the end time of the pass event.
+
+
+#### Run the interface
+
+Before launching the interface it is necessary to insert the videos in mp4 format inside the static folder and create a folder named 'Data' containing the corresponding event data (Wyscout json format). Unfortunately, an event indicates the time when the pass starts, but not when it ends. Moreover, by comparing the video and the events, we note that the time of an event is often misaligned with the video.
+We overcome these drawbacks by annotating manually the passes.
+
+To run the interface you need to run the requirements.txt file that contains all the dependencies required, especially the flask library. As a first step to start the interface you must first open a bash in order to launch the following script:  
+```python events_tagging_dashboard.py```  
+Once launched, on your shell you should have a success message such as the following:
+![bash](/Scheme/bash.jpg)  
+Now, you can access the interface from a browser, by accessing the following url: ```http://localhost:8000```
+
+
+
+
+#### PassNet Training
 The code that allows you to train models is inside the Training folder, which contains: ```the TrainModel.py``` script and the ```Model Metrics```, ```Model Parameters``` and ```Model Steps``` folders. The training of one of the models is done first by defining the initialization parameters in the ```train_ini.json``` file in the Model Parameters folder. These parameters are:
 * ```input_dim```: dimension of the input feature vector of the Bidirectional LSTM (512 for ResNets and 4096 for VGGs).
 * ```hidden_dim```: dimension of the dense layers.
@@ -106,28 +140,13 @@ We save the metrics for the test and train set inside the folder ```Model Metric
   "dataset_type": ["Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0", "Train", "Train", "Validation 0"]
 }
 ```
-#### Predicting
+#### Pass annotation
 The models saved in the training phase in ```.pth``` format can be used to annotate new videos and obtain the model's performance in terms of *Accuracy*, *Precision 'Pass'*, *Precision 'No Pass'*, *Recall 'Pass'*, *Recall 'No Pass'* and *F1 Score 'Pass'*. The folder ```Predicting``` allows to do this, in particular the script ```video_prediction.py``` returns the predictions without threshold, the predictions with the threshold equal to 0.5 and the metrics of the video passed as input.
 Before running the script you need to perform two basic operations, the first one requires you to insert the model to load in ```.pth``` format in the ```Model State``` folder. The second operation requires you to set the file ```video_lab_ini.json``` inside the ```Model Ini``` folder with the model parameters and the name of the video you want to annotate. The file parameters are the same as those in ```train_ini.json``` except for some, such as: :
 * ```model_to_load```: this parameter is numeric and refers to the model number to load. In practice, the models saved during training are marked with a number that identifies the epoch.
 * ```threshold```: the treshold to apply to predictions.
 * ```matches_predicitions```: the name of the video to annotate. The folder with the tensors of the frames must be saved inside the path ```Data/Input/frame_tensor/<name_of_the_video>```.
 
-## Pass Tagging Interface
-The pass tagging interface allows to define the time window of the pass event. The image below shows how the mainly UI of the interface.  
 
-![PassTaggingInterface](/Scheme/manual_annotation_application-1.png)  
-
-a) The dropdown element allows to select wich match you want to tag,  
-b) The table shows all the pass event that occurs during the match. The rows are clickable and set the video at the start time of the pass event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'.  
-c) The player shows the video of the match. The buttons under the video allows to play/pause the video, go to previous frame, go to next frame, define the start time and the end time of the pass event.
-
-### Run the interface
-To run the interface you need to run the requirements.txt file that contains all the dependencies required, especially the flask library. As a first step to start the interface you must first open a bash in order to launch the following script:  
-```python events_tagging_dashboard.py```  
-If all went well the bash should look like the figure below.
-![bash](/Scheme/bash.jpg)  
-The second step requires you to copy and paste the url that will appear in the bash inside the address box of a browser (preferably Firefox) and wait for the page to load.  
-**N.B.** Before launching the interface it is necessary to insert the videos in mp4 format inside the static folder and create a folder named 'Data' in which wyscout public data in json([Wyscout Dataset](https://figshare.com/collections/Soccer_match_event_dataset/4415000/2)) format must be present.
 
 
