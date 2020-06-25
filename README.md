@@ -67,10 +67,16 @@ To run the interface you need to run the requirements.txt file that contains all
 ```python events_tagging_dashboard.py```  
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.jpg)  
-Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```
+Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```  
+Once the matches are annotated a csv file with the annotations is saved in the path Pass Tagging Interface/Data.
 
-
-
+#### Create Labels
+Creating labels requires a series of steps:  
+* Move the csv file created by the interface from the Pass Tagging Interface/Data folder to the Create Labels/Annotations folder.  
+* Insert the Wyscout json files into the Create Labels/Events_Data folder.  
+* Insert the game video in mp4 format into the Create Labels/Videos folder.  
+* Launch the python script ```python create_target_matrix.py <video_name>```.
+The script create the labels in pickle format inside the folder Create Labels/Outputs.
 
 #### PassNet Training
 The code that allows you to train models is inside the Training folder, which contains: ```the TrainModel.py``` script and the ```Model Metrics```, ```Model Parameters``` and ```Model Steps``` folders. The training of one of the models is done first by defining the initialization parameters in the ```train_ini.json``` file in the Model Parameters folder. These parameters are:
